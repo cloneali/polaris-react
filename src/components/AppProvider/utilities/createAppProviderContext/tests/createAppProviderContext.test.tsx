@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as appBridge from '@shopify/app-bridge';
-import * as redirect from '@shopify/app-bridge/client/redirect';
 import {noop} from '@shopify/javascript-utilities/other';
 import * as targets from '@shopify/react-utilities/target';
 import createAppProviderContext, {
@@ -21,8 +20,7 @@ describe('createAppProviderContext()', () => {
   let createAppSpy: jest.SpyInstance<any>;
 
   beforeEach(() => {
-    createAppSpy = jest
-      .spyOn(appBridge, 'default');
+    createAppSpy = jest.spyOn(appBridge, 'default');
   });
 
   afterEach(() => {
