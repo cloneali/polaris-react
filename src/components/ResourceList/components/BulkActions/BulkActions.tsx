@@ -395,42 +395,36 @@ export class BulkActions extends React.PureComponent<CombinedProps, State> {
     );
   }
 
-  @autobind
-  private setLargeScreenButtonsNode(node: HTMLElement | null) {
+  private setLargeScreenButtonsNode = (node: HTMLElement | null) => {
     this.largeScreenButtonsNode = node;
-  }
+  };
 
-  @autobind
-  private setContainerNode(node: HTMLElement | null) {
+  private setContainerNode = (node: HTMLElement | null) => {
     this.containerNode = node;
-  }
+  };
 
-  @autobind
-  private setMoreActionsNode(node: HTMLElement | null) {
+  private setMoreActionsNode = (node: HTMLElement | null) => {
     this.moreActionsNode = node;
-  }
+  };
 
-  @autobind
-  private setSelectMode(val: boolean) {
+  private setSelectMode = (val: boolean) => {
     const {onSelectModeToggle} = this.props;
     if (onSelectModeToggle) {
       onSelectModeToggle(val);
     }
-  }
+  };
 
-  @autobind
-  private toggleSmallScreenPopover() {
+  private toggleSmallScreenPopover = () => {
     this.setState(({smallScreenPopoverVisible}) => ({
       smallScreenPopoverVisible: !smallScreenPopoverVisible,
     }));
-  }
+  };
 
-  @autobind
-  private toggleLargeScreenPopover() {
+  private toggleLargeScreenPopover = () => {
     this.setState(({largeScreenPopoverVisible}) => ({
       largeScreenPopoverVisible: !largeScreenPopoverVisible,
     }));
-  }
+  };
 
   @autobind
   @debounce(50, {trailing: true})
@@ -452,13 +446,12 @@ export class BulkActions extends React.PureComponent<CombinedProps, State> {
     }
   }
 
-  @autobind
-  private handleMeasurement(width: number) {
+  private handleMeasurement = (width: number) => {
     const {measuring} = this.state;
     if (measuring) {
       this.promotedActionsWidths.push(width);
     }
-  }
+  };
 }
 
 function instanceOfBulkActionListSectionArray(

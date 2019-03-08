@@ -276,12 +276,11 @@ export class BaseItem extends React.Component<CombinedProps, State> {
     );
   }
 
-  @autobind
-  private handleResize() {
+  private handleResize = () => {
     if (!navigationBarCollapsed().matches && this.state.expanded) {
       this.setState({expanded: false});
     }
-  }
+  };
 
   @autobind
   @memoize()

@@ -111,7 +111,6 @@ export class ResourceList extends React.Component<CombinedProps, State> {
     );
   }
 
-  @autobind
   private get bulkSelectState(): boolean | 'indeterminate' {
     const {selectedItems, items} = this.props;
     let selectState: boolean | 'indeterminate' = 'indeterminate';
@@ -129,7 +128,6 @@ export class ResourceList extends React.Component<CombinedProps, State> {
     return selectState;
   }
 
-  @autobind
   private get headerTitle() {
     const {
       resourceName = this.defaultResourceName,
@@ -154,7 +152,6 @@ export class ResourceList extends React.Component<CombinedProps, State> {
     return headerTitleMarkup;
   }
 
-  @autobind
   private get bulkActionsLabel() {
     const {
       selectedItems = [],
@@ -172,7 +169,6 @@ export class ResourceList extends React.Component<CombinedProps, State> {
     });
   }
 
-  @autobind
   private get bulkActionsAccessibilityLabel() {
     const {
       resourceName = this.defaultResourceName,
@@ -216,7 +212,6 @@ export class ResourceList extends React.Component<CombinedProps, State> {
     }
   }
 
-  @autobind
   private get paginatedSelectAllText() {
     const {
       hasMoreItems,
@@ -238,7 +233,6 @@ export class ResourceList extends React.Component<CombinedProps, State> {
     }
   }
 
-  @autobind
   private get paginatedSelectAllAction() {
     const {
       hasMoreItems,
@@ -562,8 +556,7 @@ export class ResourceList extends React.Component<CombinedProps, State> {
     }
   }
 
-  @autobind
-  private setLoadingPosition() {
+  private setLoadingPosition = () => {
     if (this.listRef.current != null) {
       if (typeof window === 'undefined') {
         return;
@@ -589,10 +582,9 @@ export class ResourceList extends React.Component<CombinedProps, State> {
 
       this.setState({loadingPosition: spinnerPosition});
     }
-  }
+  };
 
-  @autobind
-  private handleSelectAllItemsInStore() {
+  private handleSelectAllItemsInStore = () => {
     const {
       onSelectionChange,
       selectedItems,
@@ -608,10 +600,9 @@ export class ResourceList extends React.Component<CombinedProps, State> {
     if (onSelectionChange) {
       onSelectionChange(newlySelectedItems);
     }
-  }
+  };
 
-  @autobind
-  private renderItem(item: any, index: number) {
+  private renderItem = (item: any, index: number) => {
     const {renderItem, idForItem = defaultIdForItem} = this.props;
     const id = idForItem(item, index);
 
@@ -620,10 +611,9 @@ export class ResourceList extends React.Component<CombinedProps, State> {
         {renderItem(item, id)}
       </li>
     );
-  }
+  };
 
-  @autobind
-  private handleSelectionChange(selected: boolean, id: string) {
+  private handleSelectionChange = (selected: boolean, id: string) => {
     const {
       onSelectionChange,
       selectedItems,
@@ -655,19 +645,17 @@ export class ResourceList extends React.Component<CombinedProps, State> {
     if (onSelectionChange) {
       onSelectionChange(newlySelectedItems);
     }
-  }
+  };
 
-  @autobind
-  private handleSelectMode(selectMode: boolean) {
+  private handleSelectMode = (selectMode: boolean) => {
     const {onSelectionChange} = this.props;
     this.setState({selectMode});
     if (!selectMode && onSelectionChange) {
       onSelectionChange([]);
     }
-  }
+  };
 
-  @autobind
-  private handleToggleAll() {
+  private handleToggleAll = () => {
     const {
       onSelectionChange,
       selectedItems,
@@ -698,7 +686,7 @@ export class ResourceList extends React.Component<CombinedProps, State> {
     if (onSelectionChange) {
       onSelectionChange(newlySelectedItems);
     }
-  }
+  };
 }
 
 function getAllItemsOnPage(

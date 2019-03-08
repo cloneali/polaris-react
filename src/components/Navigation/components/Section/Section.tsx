@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import {classNames} from '@shopify/react-utilities/styles';
-import {autobind, memoize} from '@shopify/javascript-utilities/decorators';
+import {memoize} from '@shopify/javascript-utilities/decorators';
 import {createUniqueIDFactory} from '@shopify/javascript-utilities/other';
 
 import Collapsible from '../../../Collapsible';
@@ -184,8 +184,7 @@ export default class Section extends React.Component<Props, State> {
     };
   }
 
-  @autobind
-  private toggleViewAll() {
+  private toggleViewAll = () => {
     this.setState(({expanded}) => ({expanded: !expanded}));
-  }
+  };
 }
