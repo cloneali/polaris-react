@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {memoize} from '@shopify/javascript-utilities/decorators';
 import compose from '@shopify/react-compose';
 import {ComplexAction, WithContextTypes} from '../../../../types';
 import {withAppProvider, WithAppProviderProps} from '../../../AppProvider';
@@ -131,7 +130,6 @@ export class FilterControl extends React.Component<CombinedProps> {
     onFiltersChange(newAppliedFilters);
   };
 
-  @memoize()
   private getRemoveFilterCallback(filterId: string) {
     return () => {
       this.handleRemoveFilter(filterId);
