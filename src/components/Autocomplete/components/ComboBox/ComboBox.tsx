@@ -131,7 +131,7 @@ export default class ComboBox extends React.PureComponent<Props, State> {
   getChildContext(): Context {
     return {
       comboBoxId: this.state.comboBoxId,
-      selectedOptionId: this.getSelectedOptionId,
+      selectedOptionId: this.selectedOptionId,
       subscribe: this.subscribe,
       unsubscribe: this.unsubscribe,
     };
@@ -505,7 +505,7 @@ export default class ComboBox extends React.PureComponent<Props, State> {
     }
   };
 
-  private get getSelectedOptionId(): string | undefined {
+  private get selectedOptionId(): string | undefined {
     const {selectedOption, selectedIndex, comboBoxId} = this.state;
     return selectedOption ? `${comboBoxId}-${selectedIndex}` : undefined;
   }
