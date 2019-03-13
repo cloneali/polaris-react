@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {CSSTransition, Transition} from 'react-transition-group';
-import {autobind, debounce} from '@shopify/javascript-utilities/decorators';
+import debounce from 'lodash/debounce';
 import {classNames} from '@shopify/react-utilities/styles';
 import {DisableableAction, Action, ActionListSection} from '../../../../types';
 import {Duration} from '../../../shared';
@@ -76,6 +76,28 @@ export class BulkActions extends React.PureComponent<CombinedProps, State> {
   private promotedActionsWidths: number[] = [];
   private bulkActionsWidth = 0;
   private addedMoreActionsWidthForMeasuring = 0;
+
+  private handleResize = debounce(
+    () => {
+      const {smallScreenPopoverVisible, largeScreenPopoverVisible} = this.state;
+
+      if (this.containerNode) {
+        const containerWidth = this.containerNode.getBoundingClientRect().width;
+        if (containerWidth > 0) {
+          this.setState({containerWidth});
+        }
+      }
+
+      if (smallScreenPopoverVisible || largeScreenPopoverVisible) {
+        this.setState({
+          smallScreenPopoverVisible: false,
+          largeScreenPopoverVisible: false,
+        });
+      }
+    },
+    50,
+    {trailing: true},
+  );
 
   private get numberOfPromotedActionsToRender(): number {
     const {promotedActions} = this.props;
@@ -425,26 +447,6 @@ export class BulkActions extends React.PureComponent<CombinedProps, State> {
       largeScreenPopoverVisible: !largeScreenPopoverVisible,
     }));
   };
-
-  @autobind
-  @debounce(50, {trailing: true})
-  private handleResize() {
-    const {smallScreenPopoverVisible, largeScreenPopoverVisible} = this.state;
-
-    if (this.containerNode) {
-      const containerWidth = this.containerNode.getBoundingClientRect().width;
-      if (containerWidth > 0) {
-        this.setState({containerWidth});
-      }
-    }
-
-    if (smallScreenPopoverVisible || largeScreenPopoverVisible) {
-      this.setState({
-        smallScreenPopoverVisible: false,
-        largeScreenPopoverVisible: false,
-      });
-    }
-  }
 
   private handleMeasurement = (width: number) => {
     const {measuring} = this.state;

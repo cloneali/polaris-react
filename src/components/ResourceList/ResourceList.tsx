@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import {autobind, debounce} from '@shopify/javascript-utilities/decorators';
+import debounce from 'lodash/debounce';
 import {classNames} from '@shopify/react-utilities/styles';
 import {createUniqueIDFactory} from '@shopify/javascript-utilities/other';
 import Button from '../Button';
@@ -83,6 +83,20 @@ export class ResourceList extends React.Component<CombinedProps, State> {
 
   private defaultResourceName: {singular: string; plural: string};
   private listRef: React.RefObject<HTMLUListElement> = React.createRef();
+
+  private handleResize = debounce(() => {
+    const {selectedItems} = this.props;
+    const {selectMode} = this.state;
+
+    if (
+      selectedItems &&
+      selectedItems.length === 0 &&
+      selectMode &&
+      !isSmallScreen()
+    ) {
+      this.handleSelectMode(false);
+    }
+  }, 50);
 
   constructor(props: CombinedProps) {
     super(props);
@@ -538,22 +552,6 @@ export class ResourceList extends React.Component<CombinedProps, State> {
 
   private itemsExist(items?: Items) {
     return (items || this.props.items).length > 0;
-  }
-
-  @debounce(50)
-  @autobind
-  private handleResize() {
-    const {selectedItems} = this.props;
-    const {selectMode} = this.state;
-
-    if (
-      selectedItems &&
-      selectedItems.length === 0 &&
-      selectMode &&
-      !isSmallScreen()
-    ) {
-      this.handleSelectMode(false);
-    }
   }
 
   private setLoadingPosition = () => {

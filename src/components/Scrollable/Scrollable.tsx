@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {autobind, debounce} from '@shopify/javascript-utilities/decorators';
+import debounce from 'lodash/debounce';
 import {
   addEventListener,
   removeEventListener,
@@ -63,6 +63,14 @@ class Scrollable extends React.Component<CombinedProps, State> {
   };
 
   private scrollArea: HTMLElement | null;
+
+  private handleResize = debounce(
+    () => {
+      this.handleScroll();
+    },
+    50,
+    {trailing: true},
+  );
 
   getChildContext(): Context {
     return {
@@ -168,12 +176,6 @@ class Scrollable extends React.Component<CombinedProps, State> {
       scrollPosition: scrollTop,
     });
   };
-
-  @autobind
-  @debounce(50, {trailing: true})
-  private handleResize() {
-    this.handleScroll();
-  }
 
   private scrollHint = () => {
     const {scrollArea} = this;

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import {autobind, debounce} from '@shopify/javascript-utilities/decorators';
 import {classNames} from '@shopify/react-utilities/styles';
 import isEqual from 'lodash/isEqual';
+import debounce from 'lodash/debounce';
 
 import {headerCell} from '../shared';
 import {withAppProvider, WithAppProviderProps} from '../AppProvider';
@@ -66,6 +66,31 @@ export class DataTable extends React.PureComponent<
   private scrollContainer = React.createRef<HTMLDivElement>();
   private table = React.createRef<HTMLTableElement>();
   private totalsRowHeading: string;
+
+  private handleResize = debounce(() => {
+    const {footerContent, truncate} = this.props;
+    const {
+      table: {current: table},
+      scrollContainer: {current: scrollContainer},
+    } = this;
+    let collapsed = false;
+    if (table && scrollContainer) {
+      collapsed = table.scrollWidth > scrollContainer.clientWidth;
+      scrollContainer.scrollLeft = 0;
+    }
+    this.setState(
+      {
+        collapsed,
+        heights: [],
+        ...this.calculateColumnVisibilityData(collapsed),
+      },
+      () => {
+        if (footerContent || !truncate) {
+          this.setHeightsAndScrollPosition();
+        }
+      },
+    );
+  });
 
   constructor(props: CombinedProps) {
     super(props);
@@ -213,33 +238,6 @@ export class DataTable extends React.PureComponent<
           </div>
         </div>
       </div>
-    );
-  }
-
-  @autobind
-  @debounce()
-  private handleResize() {
-    const {footerContent, truncate} = this.props;
-    const {
-      table: {current: table},
-      scrollContainer: {current: scrollContainer},
-    } = this;
-    let collapsed = false;
-    if (table && scrollContainer) {
-      collapsed = table.scrollWidth > scrollContainer.clientWidth;
-      scrollContainer.scrollLeft = 0;
-    }
-    this.setState(
-      {
-        collapsed,
-        heights: [],
-        ...this.calculateColumnVisibilityData(collapsed),
-      },
-      () => {
-        if (footerContent || !truncate) {
-          this.setHeightsAndScrollPosition();
-        }
-      },
     );
   }
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {createUniqueIDFactory} from '@shopify/javascript-utilities/other';
 import {classNames} from '@shopify/react-utilities/styles';
-import {autobind, debounce} from '@shopify/javascript-utilities/decorators';
+import debounce from 'lodash/debounce';
 import {
   addEventListener,
   removeEventListener,
@@ -155,6 +155,29 @@ export class DropZone extends React.Component<CombinedProps, State> {
   private dropNode: HTMLElement | HTMLDocument | null = null;
   private dragTargets: EventTarget[] = [];
   private fileInputNode: HTMLInputElement;
+
+  private adjustSize = debounce(
+    () => {
+      if (!this.node) {
+        return;
+      }
+
+      let size = 'extraLarge';
+      const width = this.node.getBoundingClientRect().width;
+
+      if (width < 100) {
+        size = 'small';
+      } else if (width < 160) {
+        size = 'medium';
+      } else if (width < 300) {
+        size = 'large';
+      }
+
+      this.setState({size});
+    },
+    50,
+    {trailing: true},
+  );
 
   constructor(props: CombinedProps) {
     super(props);
@@ -352,27 +375,6 @@ export class DropZone extends React.Component<CombinedProps, State> {
 
     this.fileInputNode.click();
   };
-
-  @autobind
-  @debounce(50, {trailing: true})
-  private adjustSize() {
-    if (!this.node) {
-      return;
-    }
-
-    let size = 'extraLarge';
-    const width = this.node.getBoundingClientRect().width;
-
-    if (width < 100) {
-      size = 'small';
-    } else if (width < 160) {
-      size = 'medium';
-    } else if (width < 300) {
-      size = 'large';
-    }
-
-    this.setState({size});
-  }
 
   private getValidatedFiles = (files: File[] | DataTransferItem[]) => {
     const {accept, allowMultiple, customValidator} = this.props;
